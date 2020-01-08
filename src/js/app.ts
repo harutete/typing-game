@@ -1,5 +1,6 @@
 import modal from './modal'
 import "../sass/style.scss";
+import { resolve } from 'dns';
 
 interface questionList {
   description: string,
@@ -10,7 +11,6 @@ class TypingGame {
   count: number
   question: string[]
   btnStart: HTMLButtonElement
-  playingDisplay: any
   questionBoad: any
   questionBoadChildren: any
   questionCharas: any
@@ -21,7 +21,6 @@ class TypingGame {
     this.count = 0
     this.question = []
     this.btnStart = document.querySelector('.js-btn-start')
-    this.playingDisplay = document.querySelector('.js-card-playing-display')
     this.questionBoad = document.querySelector('.js-text-typing-theme')
     this.questionBoadChildren = ''
     this.questionCharas = ''
@@ -64,11 +63,14 @@ class TypingGame {
   }
   setGameDisplay (): void {
     const beforeDisplay: HTMLElement = document.querySelector('.js-before-display') as HTMLElement
+    const playingDisplay = document.querySelector('.js-card-playing-display') as HTMLElement
 
     this.resultModal = new modal(document.querySelector('.js-modal'))
     this.resultModal.init()
-    this.playingDisplay.style.display = 'block'
+
     beforeDisplay.style.display = 'none'
+    playingDisplay.style.display = 'block'
+
     this.setQuestion()
 
     document.addEventListener('keydown', (event: any) => {
@@ -77,7 +79,6 @@ class TypingGame {
       } else {
         return
       }
-      // event.stopPropagation()
     })
   }
   setCountdown () {
@@ -87,8 +88,8 @@ class TypingGame {
     let count = 1
     const countdown: any = () => {
       currentTimeMSec = endTimeMSec - (1000 * count)
-      let minutes: number | string = Math.floor(currentTimeMSec / (1000 * 60))
-      let seconds: number | string = currentTimeMSec % (1000 * 60) / 1000
+      let minutes: number = Math.floor(currentTimeMSec / (1000 * 60))
+      let seconds: number = currentTimeMSec % (1000 * 60) / 1000
       let mm = `0${minutes}`.slice(-2)
       let ss = `0${seconds}`.slice(-2)
       let timerId
@@ -127,40 +128,36 @@ class TypingGame {
     })
   }
   keyCheck (event: any): void {
-    if (this.question.length > this.count) {
-      if (this.question[this.count] === event.key) {
-        this.questionCharas[this.count].classList.add('active')
-        this.count++
-
-        // TODO リムーブイベントさせる
-        if (this.question.length === this.count) {
-          this.resultModal.showModal()
-
-          setTimeout(() => {
-            this.resultModal.closeModal()
-          }, 2000, this.setQuestion())
-
-          // const closeModalPromise: Promise<void> = new Promise(() => {
-          //   setTimeout(() => {
-          //     this.resultModal.closeModal()
-          //   }, 2000)
-          // })
-
-          // this.resultModal.showModal()
-
-          // closeModalPromise.then(() => {
-          //   return new Promise(() => {
-          //     this.setQuestion()
-          //   })
-          // })
-        }
-      } else {
-        return
-      }
-    } else {
+    if (this.count > this.question.length) {
       this.count = 0
+
       return
     }
+    if (this.question[this.count] === event.key) {
+      this.questionCharas[this.count].classList.add('active')
+      this.count++
+
+      // TODO リムーブイベントさせる
+      if (this.question.length === this.count) {
+        this.resultModal.showModal()
+        this.correctEvent()
+      }
+    } else {
+      return
+    }
+  }
+  correctEvent ():void {
+    const promise = new Promise((resolve: any) => {
+      setTimeout(() => {
+        this.resultModal.closeModal()
+
+        resolve()
+      }, 1500)
+    })
+
+    promise.then(() => {
+      this.setQuestion()
+    })
   }
   endGame ():void {
     const afterDisplay: HTMLElement = document.querySelector('.js-after-display') as HTMLElement
