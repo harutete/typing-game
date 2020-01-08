@@ -10,47 +10,18 @@ interface questionList {
 class TypingGame {
   count: number
   question: string[]
-  btnStart: HTMLButtonElement
   questionBoad: any
   questionBoadChildren: any
   questionCharas: any
   resultModal: any
-  questionList: questionList[]
 
   constructor () {
     this.count = 0
     this.question = []
-    this.btnStart = document.querySelector('.js-btn-start')
     this.questionBoad = document.querySelector('.js-text-typing-theme')
     this.questionBoadChildren = ''
     this.questionCharas = ''
     this.resultModal = ''
-    this.questionList = [
-      {
-        description: 'りんご',
-        question: 'apple'
-      },
-      {
-        description: 'バナナ',
-        question: 'banana'
-      },
-      {
-        description: 'いちご',
-        question: 'strawberry'
-      },
-      {
-        description: 'かぼちゃ',
-        question: 'squash'
-      },
-      {
-        description: 'スイカ',
-        question: 'watermelon'
-      },
-      {
-        description: 'ぶどう',
-        question: 'grape'
-      },
-    ]
   }
   init (): void {
     const btnStart = document.querySelector('.js-btn-start')
@@ -108,9 +79,35 @@ class TypingGame {
     countdown()
   }
   setQuestion (): void {
-    const index: number = Math.floor(Math.random() * Math.floor(this.questionList.length))
-    this.question = this.questionList[index].question.split('')
-    let questionHTML: string = `<p>${this.questionList[index].description}</p>`
+    const questionList: questionList[] = [
+      {
+        description: 'りんご',
+        question: 'apple'
+      },
+      {
+        description: 'バナナ',
+        question: 'banana'
+      },
+      {
+        description: 'いちご',
+        question: 'strawberry'
+      },
+      {
+        description: 'かぼちゃ',
+        question: 'squash'
+      },
+      {
+        description: 'スイカ',
+        question: 'watermelon'
+      },
+      {
+        description: 'ぶどう',
+        question: 'grape'
+      },
+    ]
+    const index: number = Math.floor(Math.random() * Math.floor(questionList.length))
+    this.question = questionList[index].question.split('')
+    let questionHTML: string = `<p>${questionList[index].description}</p>`
 
     if (this.count > 0) {
       this.count = 0
