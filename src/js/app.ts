@@ -9,19 +9,23 @@ interface questionList {
 
 class TypingGame {
   count: number
+  timeCount: number
   question: string[]
   questionBoad: any
   questionBoadChildren: any
   questionCharas: any
   resultModal: any
+  timerId: any
 
   constructor () {
     this.count = 0
+    this.timeCount = 1
     this.question = []
     this.questionBoad = document.querySelector('.js-text-typing-theme')
     this.questionBoadChildren = ''
     this.questionCharas = ''
     this.resultModal = ''
+    this.timerId = ''
   }
   init (): void {
     const btnStart = document.querySelector('.js-btn-start')
@@ -53,30 +57,23 @@ class TypingGame {
     })
   }
   setCountdown () {
-    const timeDisplay: any = document.querySelector('.js-text-countdown')
     const endTimeMSec: number = 1000 * 60 * 3 // 3分
-    let currentTimeMSec = endTimeMSec
-    let count = 1
-    const countdown: any = () => {
-      currentTimeMSec = endTimeMSec - (1000 * count)
-      let minutes: number = Math.floor(currentTimeMSec / (1000 * 60))
-      let seconds: number = currentTimeMSec % (1000 * 60) / 1000
-      let mm = `0${minutes}`.slice(-2)
-      let ss = `0${seconds}`.slice(-2)
-      let timerId
+    let currentTimeMSec = endTimeMSec - (1000 * this.timeCount)
+    let minutes: number = Math.floor(currentTimeMSec / (1000 * 60))
+    let seconds: number = currentTimeMSec % (1000 * 60) / 1000
+    let mm = `0${minutes}`.slice(-2)
+    let ss = `0${seconds}`.slice(-2)
 
-      timeDisplay.innerHTML = `${mm}:${ss}`
-      count++
+    document.querySelector('.js-text-countdown').innerHTML = `${mm}:${ss}`
+    this.timeCount++
 
-      timerId = setTimeout(() => countdown(), 1000)
+    this.timerId = setTimeout(() => this.setCountdown(), 1000)
 
-      if (currentTimeMSec === 0) {
-        clearTimeout(timerId)
-        this.endGame()
-      }
+    if (currentTimeMSec === 0) {
+      clearTimeout(this.timerId)
+      this.timeCount = 1
+      this.endGame()
     }
-
-    countdown()
   }
   setQuestion (): void {
     const questionList: questionList[] = [
@@ -136,7 +133,6 @@ class TypingGame {
 
       // TODO リムーブイベントさせる
       if (this.question.length === this.count) {
-        this.resultModal.showModal()
         this.correctEvent()
       }
     } else {
@@ -144,6 +140,8 @@ class TypingGame {
     }
   }
   correctEvent ():void {
+    this.resultModal.showModal()
+    clearTimeout(this.timerId)
     const promise = new Promise((resolve: any) => {
       setTimeout(() => {
         this.resultModal.closeModal()
@@ -153,6 +151,7 @@ class TypingGame {
     })
 
     promise.then(() => {
+      this.setCountdown()
       this.setQuestion()
     })
   }

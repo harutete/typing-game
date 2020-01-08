@@ -1,6 +1,5 @@
 export default class modal {
   body: any
-  bodyElement: any
   modalWrap: any
   constructor (elem: any) {
     this.body = document.body
