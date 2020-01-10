@@ -10,8 +10,8 @@ class TypingGame {
   count: number
   timeCount: number
   question: string[]
-  questionBoad: any
-  questionBoadChildren: any
+  questionBoard: any
+  questionBoardChildren: any
   questionCharas: any
   resultModal: any
   timerId: any
@@ -20,8 +20,8 @@ class TypingGame {
     this.count = 0
     this.timeCount = 1
     this.question = []
-    this.questionBoad = document.querySelector('.js-text-typing-theme')
-    this.questionBoadChildren = ''
+    this.questionBoard = document.querySelector('.js-text-typing-theme')
+    this.questionBoardChildren = ''
     this.questionCharas = ''
     this.resultModal = ''
     this.timerId = ''
@@ -113,10 +113,10 @@ class TypingGame {
       questionHTML += `<span class="text-charas">${charas}</span>`
     })
 
-    this.questionBoad.innerHTML = questionHTML
+    this.questionBoard.innerHTML = questionHTML
 
-    this.questionBoadChildren = this.questionBoad.children
-    this.questionCharas = [...this.questionBoadChildren].filter((elem) => {
+    this.questionBoardChildren = this.questionBoard.children
+    this.questionCharas = [...this.questionBoardChildren].filter((elem) => {
       return elem.classList.contains('text-charas')
     })
   }
@@ -157,7 +157,7 @@ class TypingGame {
   endGame ():void {
     const afterDisplay: HTMLElement = document.querySelector('.js-after-display') as HTMLElement
 
-    this.questionBoad.innerHTML = '<p>終了</p>'
+    this.questionBoard.innerHTML = '<p>終了</p>'
     afterDisplay.style.display = 'block'
 
     document.querySelector('.js-btn-restart').addEventListener('click', () => {
