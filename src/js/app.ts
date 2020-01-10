@@ -16,10 +16,10 @@ class TypingGame {
     this.timeCount = 1
     this.question = []
     this.questionBoard = document.querySelector('.js-text-typing-theme')
-    this.questionBoardChildren = ''
-    this.questionCharas = ''
-    this.resultModal = ''
-    this.timerId = ''
+    this.questionBoardChildren = null
+    this.questionCharas = null
+    this.resultModal = null
+    this.timerId = null
   }
   init (): void {
     const btnStart = document.querySelector('.js-btn-start')
@@ -52,11 +52,11 @@ class TypingGame {
   }
   setCountdown () {
     const endTimeMSec: number = 1000 * 60 * 3 // 3分
-    let currentTimeMSec = endTimeMSec - (1000 * this.timeCount)
-    let minutes: number = Math.floor(currentTimeMSec / (1000 * 60))
-    let seconds: number = currentTimeMSec % (1000 * 60) / 1000
-    let mm = `0${minutes}`.slice(-2)
-    let ss = `0${seconds}`.slice(-2)
+    const currentTimeMSec = endTimeMSec - (1000 * this.timeCount)
+    const minutes: number = Math.floor(currentTimeMSec / (1000 * 60))
+    const seconds: number = currentTimeMSec % (1000 * 60) / 1000
+    const mm = `0${minutes}`.slice(-2)
+    const ss = `0${seconds}`.slice(-2)
 
     document.querySelector('.js-text-countdown').innerHTML = `${mm}:${ss}`
     this.timeCount++
