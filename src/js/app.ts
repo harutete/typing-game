@@ -1,11 +1,6 @@
 import modal from './modal'
 import "../sass/style.scss";
 
-interface questionList {
-  description: string,
-  question: string
-}
-
 class TypingGame {
   count: number
   timeCount: number
@@ -75,7 +70,8 @@ class TypingGame {
     }
   }
   setQuestion (): void {
-    const questionList: questionList[] = [
+    const questionList: { description: string, question: string }[] =
+    [
       {
         description: 'りんご',
         question: 'apple'
