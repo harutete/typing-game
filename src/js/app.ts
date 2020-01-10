@@ -1,6 +1,5 @@
 import modal from './modal'
 import "../sass/style.scss";
-import { resolve } from 'dns';
 
 interface questionList {
   description: string,
