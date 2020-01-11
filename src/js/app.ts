@@ -66,7 +66,7 @@ class TypingGame {
     if (currentTimeMSec === 0) {
       clearTimeout(this.timerId)
       this.timeCount = 1
-      this.endGame()
+      this.setTimeoutDisplay()
     }
   }
   setQuestion (): void {
@@ -150,7 +150,7 @@ class TypingGame {
       this.setQuestion()
     })
   }
-  endGame ():void {
+  setTimeoutDisplay ():void {
     const afterDisplay: HTMLElement = document.querySelector('.js-after-display') as HTMLElement
 
     this.questionBoard.innerHTML = '<p>終了</p>'
